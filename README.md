@@ -15,6 +15,13 @@
 <ul>API
     <ul>
         <li><b>/profiles/</b> [GET Authorization: JWT <token>] All profiles.</li>
-        <li><b>/profiles/:id/</b> [GET Authorization: JWT <token>] Get detail profile.</li>
+        <li><b>/profiles/:id/</b> [GET Authorization: JWT <token>] Get detail profile.<hr></li>
+        <li><b>/teachers/files/</b> [GET Authorization: JWT <token>] Get all files for current teacher filter by token</li>
+        <li><b>/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers.</li>
+        <li><b>/teachers/:id/</b> [GET Authorization: JWT <token>] Get detail teacher by id.<hr></li>
+        <li><b>/groups/</b> [GET Authorization: JWT <token>] Get list of groups.</li>
+        <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.<hr></li>
+        <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
+        <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.<hr></li>
     </ul>
 </ul>
