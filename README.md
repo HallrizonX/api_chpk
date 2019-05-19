@@ -24,6 +24,7 @@
         <li><b>/groups/</b> [GET Authorization: JWT <token>] Get list of groups.</li>
         <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.<hr></li>
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
-        <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.<hr></li>
+        <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.</li>
+        <li><b>/subjects/teachers/:subject id/</b> [GET Authorization: JWT <token>] Get current teacher for deatail subject<hr></li>
     </ul>
 </ul>

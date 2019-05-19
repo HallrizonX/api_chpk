@@ -38,6 +38,7 @@ class GroupSubjectViewSet(ReadOnlyModelViewSet):
 
         return Response({'result': serializer.data})
 
+
 class TeacherFilesViewSet(ModelViewSet):
     permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Files.objects.all()
@@ -90,6 +91,21 @@ class GroupViewSet(ReadOnlyModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         queryset = Group.objects.get(pk=kwargs.get('pk'))
         serializer = GroupSubjectSerializers(queryset)
+
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
+
+class SubjectTeacherViewSet(ReadOnlyModelViewSet):
+    permission_classes = (permissions.AllowAny,)  # Test permission
+    queryset = Subject.objects.all()
+    serializer_class = SubjectTeacherSerializers
+
+    def list(self, request, *args, **kwargs):
+        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = Teacher.objects.filter(subjects__id=kwargs.get('pk'))
+        serializer = TeacherSerializers(queryset, many=True)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
