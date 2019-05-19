@@ -9,6 +9,35 @@ from .models import Teacher, Group, Files, Subject
 from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
 
 
+class GroupTeacherViewSet(ReadOnlyModelViewSet):
+    permission_classes = (permissions.AllowAny,)  # Test permission
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializers
+
+    def list(self, request, *args, **kwargs):
+        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = Teacher.objects.filter(subjects__group__number=kwargs.get('pk'))
+        serializer = TeacherSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data})
+
+
+class GroupSubjectViewSet(ReadOnlyModelViewSet):
+    permission_classes = (permissions.AllowAny,)  # Test permission
+    queryset = Subject.objects.all()
+    serializer_class = GroupSubjectSerializers
+
+    def list(self, request, *args, **kwargs):
+        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = Subject.objects.filter(group__number=kwargs.get('pk'))
+        serializer = SubjectTeacherSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data})
+
 class TeacherFilesViewSet(ModelViewSet):
     permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Files.objects.all()
