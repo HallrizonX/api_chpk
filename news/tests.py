@@ -61,14 +61,6 @@ class NewsDataTest(APITestCase):
             (item['id'], item['title'], item['short_description'], item['preview_image'], item['date'],
              item['description'], item['images'])
         )
-        # Check out if keys is in dict
-        self.assertIn('id', item)
-        self.assertIn('title', item)
-        self.assertIn('short_description', item)
-        self.assertIn('preview_image', item)
-        self.assertIn('date', item)
-        self.assertIn('description', item)
-        self.assertIn('images', item)
 
         self.assertIn('media', item['preview_image'])
 

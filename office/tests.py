@@ -54,11 +54,27 @@ class APIConnection(APITestCase):
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
 
+        # Iteration all items in Response
+        for item in json.loads(response.content)['data']['result']:
+            # Check out if values aren't None
+            self.assertIsNotNone(
+                (item['id'], item['profile'], item['subjects'], item['files'], item['profile']['name'],
+                 item['profile']['surname'], item['profile']['last_name'], item['profile']['access'],
+                 item['profile']['user'], item['profile']['user']['username'], item['profile']['user']['email'])
+            )
+
     def test_detail_teacher(self):
         _, token = self.create_token()
         response = requests.get(self.get_url(self.domain, self.detail_teachers_url),
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
+        item = json.loads(response.content)['data']['result']
+        # Check out if values aren't None
+        self.assertIsNotNone(
+            (item['id'], item['profile'], item['subjects'], item['files'], item['profile']['name'],
+             item['profile']['surname'], item['profile']['last_name'], item['profile']['access'],
+             item['profile']['user'], item['profile']['user']['username'], item['profile']['user']['email'])
+        )
 
     def test_list_files_teachers(self):
         _, token = self.create_token()
@@ -77,24 +93,48 @@ class APIConnection(APITestCase):
         response = requests.get(self.get_url(self.domain, self.list_groups_url),
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
+        # Iteration all items in Response
+        for item in json.loads(response.content)['data']['result']:
+            # Check out if values aren't None
+            self.assertIsNotNone(
+                (item['id'], item['number'])
+            )
 
     def test_detail_groups(self):
         _, token = self.create_token()
         response = requests.get(self.get_url(self.domain, self.detail_groups_url),
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
+        # Get current item
+        item = json.loads(response.content)['data']['result']
+        # Check out if values aren't None
+        self.assertIsNotNone(
+            (item['id'], item['number'])
+        )
 
     def test_list_subjects(self):
         _, token = self.create_token()
         response = requests.get(self.get_url(self.domain, self.list_subjects_url),
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
+        # Iteration all items in Response
+        for item in json.loads(response.content)['data']['result']:
+            # Check out if values aren't None
+            self.assertIsNotNone(
+                (item['id'], item['name'], item['group'], item['group']['id'], item['group']['number'])
+            )
 
     def test_detail_subjects(self):
         _, token = self.create_token()
         response = requests.get(self.get_url(self.domain, self.detail_subjects_url),
                                 headers={"Authorization": f"JWT {token}"})
         self.checkout(response)
+        # Get current item
+        item = json.loads(response.content)['data']['result']
+        # Check out if values aren't None
+        self.assertIsNotNone(
+            (item['id'], item['name'], item['group'], item['group']['id'], item['group']['number'])
+        )
 
     def checkout(self, response):
         self.assertEqual(st.HTTP_200_OK, response.status_code)
