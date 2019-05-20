@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
+from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
@@ -8,29 +9,21 @@ from .models import Teacher, Group, Files, Subject
 from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
 
 
-class GroupTeacherViewSet(ReadOnlyModelViewSet):
-    queryset = Teacher.objects.all()
-    serializer_class = TeacherSerializers
+class GroupTeachersAPIView(APIView):
+    """ Get all teachers filter by group number """
 
-    def list(self, request, *args, **kwargs):
-        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
-
-    def retrieve(self, request, *args, **kwargs):
-        queryset = Teacher.objects.filter(subjects__group__number=kwargs.get('pk'))
+    def get(self, request, group_number) -> Response:
+        queryset = Teacher.objects.filter(subjects__group__number=group_number)
         serializer = TeacherSerializers(queryset, many=True)
 
-        return Response({'result': serializer.data})
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
 
-class GroupSubjectViewSet(ReadOnlyModelViewSet):
-    queryset = Subject.objects.all()
-    serializer_class = GroupSubjectSerializers
+class GroupSubjectsAPIView(APIView):
+    """ Get all subjects filter by group number """
 
-    def list(self, request, *args, **kwargs):
-        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
-
-    def retrieve(self, request, *args, **kwargs):
-        queryset = Subject.objects.filter(group__number=kwargs.get('pk'))
+    def get(self, request, group_number) -> Response:
+        queryset = Subject.objects.filter(group__number=group_number)
         serializer = SubjectTeacherSerializers(queryset, many=True)
 
         return Response({'result': serializer.data})
@@ -40,14 +33,15 @@ class TeacherFilesViewSet(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesTeacherSerializer
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
+        """ Get all files for current teacher"""
         user_id = request.user.id
         queryset = Files.objects.filter(teacher__profile__user_id=user_id)
         serializer = FilesTeacherSerializer(queryset, many=True)
 
         return Response({'result': serializer.data})
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs) -> Response:
         user_id = request.user.id
 
         try:
@@ -64,11 +58,11 @@ class TeacherViewSet(ReadOnlyModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializers
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         serializer = TeacherSerializers(self.get_queryset(), many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs) -> Response:
         queryset = Teacher.objects.get(pk=kwargs.get('pk'))
         serializer = TeacherSerializers(queryset)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
@@ -78,26 +72,20 @@ class GroupViewSet(ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSubjectSerializers
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         serializer = GroupSubjectSerializers(self.get_queryset(), many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs) -> Response:
         queryset = Group.objects.get(pk=kwargs.get('pk'))
         serializer = GroupSubjectSerializers(queryset)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
 
-class SubjectTeacherViewSet(ReadOnlyModelViewSet):
-    queryset = Subject.objects.all()
-    serializer_class = SubjectTeacherSerializers
-
-    def list(self, request, *args, **kwargs):
-        return Response(status=st.HTTP_405_METHOD_NOT_ALLOWED)
-
-    def retrieve(self, request, *args, **kwargs):
-        queryset = Teacher.objects.filter(subjects__id=kwargs.get('pk'))
+class SubjectTeachersAPIView(APIView):
+    def get(self, request, pk) -> Response:
+        queryset = Teacher.objects.filter(subjects__id=pk)
         serializer = TeacherSerializers(queryset, many=True)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
@@ -107,11 +95,11 @@ class SubjectViewSet(ReadOnlyModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectTeacherSerializers
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         serializer = SubjectTeacherSerializers(self.get_queryset(), many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs) -> Response:
         queryset = Subject.objects.get(pk=kwargs.get('pk'))
         serializer = SubjectTeacherSerializers(queryset)
 

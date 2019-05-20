@@ -17,12 +17,13 @@ class APIConnection(APITestCase):
 
         self.list_groups_url: str = '/api/v1/groups/'
         self.detail_groups_url: str = '/api/v1/groups/1/'
-        self.list_teachers_groups_url: str = '/api/v1/groups/teachers/411/'  # In future it'll be change
-        self.list_subjects_groups_url: str = '/api/v1/groups/subjects/411/'  # In future it'll be change
+
+        self.list_teachers_groups_url: str = '/api/v1/groups/411/teachers/'
+        self.list_subjects_groups_url: str = '/api/v1/groups/411/subjects/'
 
         self.list_subjects_url: str = '/api/v1/subjects/'
         self.detail_subjects_url: str = '/api/v1/subjects/1/'
-        self.list_teachers_subjects_url: str = '/api/v1/subjects/teachers/1/'
+        self.list_teachers_subjects_url: str = '/api/v1/subjects/1/teachers/'
 
         self.test_data: dict = {
             "username": "admin",

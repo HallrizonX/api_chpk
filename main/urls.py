@@ -11,12 +11,13 @@ from office.routers import router as office_router
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/v1/', include(profile_router.urls)),
-    path('api/v1/', include(office_router.urls)),
-    path('api/v1/', include('news.urls')),
+    path('api/v1/', include(profile_router.urls)),  # Profiles routers
+    path('api/v1/', include('office.urls')),  # Additionals for Office routers
+    path('api/v1/', include(office_router.urls)),  # Office routers
+    path('api/v1/', include('news.urls')),  # News routers
 
-    path('auth/jwt/create/', obtain_jwt_token),
-    path('auth/jwt/refresh/', refresh_jwt_token),
+    path('auth/jwt/create/', obtain_jwt_token),  # Create auth token
+    path('auth/jwt/refresh/', refresh_jwt_token),  # Verify auth token
     path('auth/jwt/verify/', verify_jwt_token),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
