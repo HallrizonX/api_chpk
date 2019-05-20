@@ -26,5 +26,7 @@
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
         <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.</li>
         <li><b>/subjects/teachers/:subject id/</b> [GET Authorization: JWT <token>] Get current teacher for deatail subject<hr></li>
+        <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
+        <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID</li>
     </ul>
 </ul>

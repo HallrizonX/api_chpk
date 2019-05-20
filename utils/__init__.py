@@ -5,9 +5,18 @@ import os
 def file_cleanup(sender, **kwargs):
     """ Remove file from folder"""
     instance = kwargs['instance']
-    if os.path.exists(instance.file.path):
+
+    try:
+        file_path = instance.file.path
+    except AttributeError:
         try:
-            os.remove(instance.file.path)
+            file_path = instance.image.path
+        except AttributeError:
+            file_path = instance.preview_image.path
+
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
         except Exception as e:
             print(e)
 

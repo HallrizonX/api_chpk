@@ -1,15 +1,11 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
-from rest_framework import permissions
-
 from .models import Profile
 from .serializers import ProfileSerializers
 
 
 class ProfileViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
-
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializers
 

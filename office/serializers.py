@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Teacher, Subject, Group, Files
 from profiles.serializers import ProfileSerializers

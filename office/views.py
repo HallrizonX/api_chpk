@@ -1,16 +1,14 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
-from rest_framework import permissions
-
-from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Teacher, Group, Files, Subject
 from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
 
 
 class GroupTeacherViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializers
 
@@ -25,7 +23,6 @@ class GroupTeacherViewSet(ReadOnlyModelViewSet):
 
 
 class GroupSubjectViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Subject.objects.all()
     serializer_class = GroupSubjectSerializers
 
@@ -40,7 +37,6 @@ class GroupSubjectViewSet(ReadOnlyModelViewSet):
 
 
 class TeacherFilesViewSet(ModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Files.objects.all()
     serializer_class = FilesTeacherSerializer
 
@@ -65,7 +61,6 @@ class TeacherFilesViewSet(ModelViewSet):
 
 
 class TeacherViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializers
 
@@ -80,7 +75,6 @@ class TeacherViewSet(ReadOnlyModelViewSet):
 
 
 class GroupViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Group.objects.all()
     serializer_class = GroupSubjectSerializers
 
@@ -96,7 +90,6 @@ class GroupViewSet(ReadOnlyModelViewSet):
 
 
 class SubjectTeacherViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Subject.objects.all()
     serializer_class = SubjectTeacherSerializers
 
@@ -111,7 +104,6 @@ class SubjectTeacherViewSet(ReadOnlyModelViewSet):
 
 
 class SubjectViewSet(ReadOnlyModelViewSet):
-    permission_classes = (permissions.AllowAny,)  # Test permission
     queryset = Subject.objects.all()
     serializer_class = SubjectTeacherSerializers
 
