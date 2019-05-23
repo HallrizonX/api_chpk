@@ -6,7 +6,35 @@ from rest_framework.response import Response
 from rest_framework import status as st
 
 from .models import Teacher, Group, Files, Subject
+from profiles.models import Profile
 from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
+from profiles.serializers import ProfileSerializers
+
+class OfficeAPIView(APIView):
+    """ Get all teachers filter by group number """
+
+    def get(self, request) -> Response:
+        user = Profile.objects.get(user=request.user)
+
+        return Response({'result': self.get_office(user)}, status=st.HTTP_200_OK)
+
+    def get_office(self, user):
+        if user.access == 'teacher':
+            user = Teacher.objects.get(profile=user)
+            serializer = TeacherSerializers(user)
+        elif user.access == 'student':
+            serializer = ProfileSerializers(user)
+        return serializer.data
+
+
+class GroupSubjectsAPIView(APIView):
+    """ Get all subjects filter by group number """
+
+    def get(self, request, group_number) -> Response:
+        queryset = Subject.objects.filter(group__number=group_number)
+        serializer = SubjectTeacherSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data})
 
 
 class GroupTeachersAPIView(APIView):

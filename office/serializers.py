@@ -8,7 +8,7 @@ class GroupSubjectSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields: tuple = ('id', 'number', 'slug')
+        fields: tuple = ('id', 'number')
 
 
 class SubjectTeacherSerializers(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class SubjectTeacherSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        fields: tuple = ('id', 'name', 'slug', 'group',)
+        fields: tuple = ('id', 'name', 'group',)
 
 
 class FilesTeacherSerializer(serializers.ModelSerializer):

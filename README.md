@@ -19,8 +19,8 @@
         <li><b>/teachers/files/</b> [GET Authorization: JWT <token>] Get all files for current teacher filter by token</li>
         <li><b>/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers.</li>
         <li><b>/teachers/:id/</b> [GET Authorization: JWT <token>] Get detail teacher by id.<hr></li>
-        <li><b>/groups/teachers/:group number</b> [GET Authorization: JWT <token>] Get list of teachers filtered by group number.</li>
-        <li><b>/groups/subjects/:group number</b> [GET Authorization: JWT <token>] Get list of subjects filtered by group number.</li>
+        <li><b>/groups/:group_number/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers filtered by group number.</li>
+        <li><b>/groups/:group number/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects filtered by group number.</li>
         <li><b>/groups/</b> [GET Authorization: JWT <token>] Get list of groups.</li>
         <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.<hr></li>
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
