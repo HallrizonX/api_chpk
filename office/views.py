@@ -5,10 +5,13 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
 
-from .models import Teacher, Group, Files, Subject
 from profiles.models import Profile
-from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
 from profiles.serializers import ProfileSerializers
+
+from .serializers import TeacherSerializers, GroupSubjectSerializers, FilesTeacherSerializer, SubjectTeacherSerializers
+from .models import Teacher, Group, Files, Subject
+from .mixins import ReadOnlyModelMixinViewSet
+
 
 class OfficeAPIView(APIView):
     """ Get all teachers filter by group number """
@@ -57,6 +60,14 @@ class GroupSubjectsAPIView(APIView):
         return Response({'result': serializer.data})
 
 
+class SubjectTeachersAPIView(APIView):
+    def get(self, request, pk) -> Response:
+        queryset = Teacher.objects.filter(subjects__id=pk)
+        serializer = TeacherSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
+
 class TeacherFilesViewSet(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesTeacherSerializer
@@ -82,53 +93,19 @@ class TeacherFilesViewSet(ModelViewSet):
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
 
-class TeacherViewSet(ReadOnlyModelViewSet):
+class TeacherViewSet(ReadOnlyModelMixinViewSet):
+    model = Teacher
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializers
 
-    def list(self, request, *args, **kwargs) -> Response:
-        serializer = TeacherSerializers(self.get_queryset(), many=True)
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs) -> Response:
-        queryset = Teacher.objects.get(pk=kwargs.get('pk'))
-        serializer = TeacherSerializers(queryset)
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
-
-class GroupViewSet(ReadOnlyModelViewSet):
+class GroupViewSet(ReadOnlyModelMixinViewSet):
+    model = Group
     queryset = Group.objects.all()
     serializer_class = GroupSubjectSerializers
 
-    def list(self, request, *args, **kwargs) -> Response:
-        serializer = GroupSubjectSerializers(self.get_queryset(), many=True)
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs) -> Response:
-        queryset = Group.objects.get(pk=kwargs.get('pk'))
-        serializer = GroupSubjectSerializers(queryset)
-
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
-
-class SubjectTeachersAPIView(APIView):
-    def get(self, request, pk) -> Response:
-        queryset = Teacher.objects.filter(subjects__id=pk)
-        serializer = TeacherSerializers(queryset, many=True)
-
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
-
-class SubjectViewSet(ReadOnlyModelViewSet):
+class SubjectViewSet(ReadOnlyModelMixinViewSet):
+    model = Subject
     queryset = Subject.objects.all()
     serializer_class = SubjectTeacherSerializers
-
-    def list(self, request, *args, **kwargs) -> Response:
-        serializer = SubjectTeacherSerializers(self.get_queryset(), many=True)
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs) -> Response:
-        queryset = Subject.objects.get(pk=kwargs.get('pk'))
-        serializer = SubjectTeacherSerializers(queryset)
-
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
