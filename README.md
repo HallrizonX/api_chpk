@@ -2,7 +2,8 @@
 <p>Python version: 3.7.1</p>
 <p>Django version: 2.0.6</p>
 <p>Django REST Framework version: 3.7.7</p>
-<p>DataBase SQLlite</p>
+<p>DataBase: SQLlite(dev)</p>
+<p>Cache: Redis Server</p>
 <hr>
 <h1>All routers</h1>
 <ul>JSON Web Token
