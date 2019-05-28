@@ -1,7 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
 
@@ -16,6 +19,7 @@ from .mixins import ReadOnlyModelMixinViewSet
 class OfficeAPIView(APIView):
     """ Get all teachers filter by group number """
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request) -> Response:
         user = Profile.objects.get(user=request.user)
 
@@ -33,6 +37,7 @@ class OfficeAPIView(APIView):
 class GroupSubjectsAPIView(APIView):
     """ Get all subjects filter by group number """
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, group_number) -> Response:
         queryset = Subject.objects.filter(group__number=group_number)
         serializer = SubjectTeacherSerializers(queryset, many=True)
@@ -43,6 +48,7 @@ class GroupSubjectsAPIView(APIView):
 class GroupTeachersAPIView(APIView):
     """ Get all teachers filter by group number """
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, group_number) -> Response:
         queryset = Teacher.objects.filter(subjects__group__number=group_number)
         serializer = TeacherSerializers(queryset, many=True)
@@ -53,6 +59,7 @@ class GroupTeachersAPIView(APIView):
 class GroupSubjectsAPIView(APIView):
     """ Get all subjects filter by group number """
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, group_number) -> Response:
         queryset = Subject.objects.filter(group__number=group_number)
         serializer = SubjectTeacherSerializers(queryset, many=True)
@@ -61,6 +68,7 @@ class GroupSubjectsAPIView(APIView):
 
 
 class SubjectTeachersAPIView(APIView):
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, pk) -> Response:
         queryset = Teacher.objects.filter(subjects__id=pk)
         serializer = TeacherSerializers(queryset, many=True)
@@ -72,6 +80,7 @@ class TeacherFilesViewSet(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesTeacherSerializer
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def list(self, request, *args, **kwargs) -> Response:
         """ Get all files for current teacher"""
         user_id = request.user.id
@@ -80,6 +89,7 @@ class TeacherFilesViewSet(ModelViewSet):
 
         return Response({'result': serializer.data})
 
+    @method_decorator(cache_page(settings.CACHE_TTL))
     def retrieve(self, request, *args, **kwargs) -> Response:
         user_id = request.user.id
 

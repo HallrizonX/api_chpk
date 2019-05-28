@@ -39,6 +39,7 @@ class ProfileJWT(APITestCase):
         response = requests.post(self.get_url(self.domain, self.verify_token_url), {'token': token})
         self.assertEqual(st.HTTP_200_OK, response.status_code)
 
+
     def test_list_profiles(self):
         _, token = self.create_token()
 

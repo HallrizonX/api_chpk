@@ -10,9 +10,11 @@ ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'main.urls'
 
-WSGI_APPLICATION = 'main.wsgi.application'
+#WSGI_APPLICATION = 'main.wsgi.application'
+ASGI_APPLICATION = "main.routing.application"
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,6 +30,18 @@ INSTALLED_APPS = [
     'news',
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "rediska"
+    }
+}
+CACHE_TTL = 60 * 60 * 24
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -42,7 +56,7 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',  # For testing
-        #'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
     'PAGE_SIZE': 100,
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -64,7 +78,6 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
-
 
 TEMPLATES = [
     {
