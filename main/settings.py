@@ -10,7 +10,7 @@ ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'main.urls'
 
-#WSGI_APPLICATION = 'main.wsgi.application'
+# WSGI_APPLICATION = 'main.wsgi.application'
 ASGI_APPLICATION = "main.routing.application"
 
 INSTALLED_APPS = [
@@ -35,7 +35,8 @@ CACHES = {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "IGNORE_EXCEPTIONS": True,
         },
         "KEY_PREFIX": "rediska"
     }
