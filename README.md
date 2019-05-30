@@ -25,7 +25,9 @@
         <li><b>/groups/:group_number/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers filtered by group number.</li>
         <li><b>/groups/:group number/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects filtered by group number.</li>
         <li><b>/groups/</b> [GET Authorization: JWT <token>] Get list of groups.</li>
-        <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.<hr></li>
+        <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.</li>
+        <li><b>/groups/:id/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers filtered by id.</li>
+        <li><b>/groups/:id/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects filtered by id.<hr></li>
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
         <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.</li>
         <li><b>/subjects/:id/teachers/</b> [GET Authorization: JWT <token>] Get all teachers for deatail subject</li>
