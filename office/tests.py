@@ -58,7 +58,7 @@ class APIConnection(APITestCase):
         for item in json.loads(response.content)['data']['result']:
             # Check out if values aren't None
             self.assertIsNotNone(
-                (item['id'], item['profile'], item['subjects'], item['files'], item['profile']['name'],
+                (item['id'], item['profile'], item['subjects'], item['url_files'], item['profile']['name'],
                  item['profile']['surname'], item['profile']['last_name'], item['profile']['access'],
                  item['profile']['user'], item['profile']['user']['username'], item['profile']['user']['email'])
             )
@@ -71,7 +71,7 @@ class APIConnection(APITestCase):
         item = json.loads(response.content)['data']['result']
         # Check out if values aren't None
         self.assertIsNotNone(
-            (item['id'], item['profile'], item['subjects'], item['files'], item['profile']['name'],
+            (item['id'], item['profile'], item['subjects'], item['url_files'], item['profile']['name'],
              item['profile']['surname'], item['profile']['last_name'], item['profile']['access'],
              item['profile']['user'], item['profile']['user']['username'], item['profile']['user']['email'])
         )

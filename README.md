@@ -1,7 +1,7 @@
 <h1>Main Versions</h1>
-<p>Python version: 3.7.1</p>
-<p>Django version: 2.0.6</p>
-<p>Django REST Framework version: 3.7.7</p>
+<p>Python version: <b>3.7.1</b></p>
+<p>Django version: <b>2.0.6</b></p>
+<p>Django REST Framework version: <b>3.7.7</b></p>
 <p>DataBase: SQLlite(dev)</p>
 <p>Cache: Redis Server</p>
 <hr>
@@ -17,16 +17,19 @@
     <ul>
         <li><b>/profiles/</b> [GET Authorization: JWT <token>] All profiles.</li>
         <li><b>/profiles/:id/</b> [GET Authorization: JWT <token>] Get detail profile.<hr></li>
-        <li><b>/teachers/files/</b> [GET Authorization: JWT <token>] Get all files for current teacher filter by token</li>
+        <li><b>/teachers/files/</b> [GET Authorization: JWT <token>] <b>Security</b> get all files for current teacher who was did authorizations by token</li>
+        <li><b>/teachers/files/:file_id/</b> [GET Authorization: JWT <token>] <b>Security</b> get file chose by id and for current teacher who was did authorizations by token</li>
         <li><b>/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers.</li>
-        <li><b>/teachers/:id/</b> [GET Authorization: JWT <token>] Get detail teacher by id.<hr></li>
+        <li><b>/teachers/:id/</b> [GET Authorization: JWT <token>] Get detail teacher by id</li>
+        <li><b>/teachers/:id/files/</b> [GET Authorization: JWT <token>] Get all files for teacher filtered by id.<hr></li>
         <li><b>/groups/:group_number/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers filtered by group number.</li>
         <li><b>/groups/:group number/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects filtered by group number.</li>
         <li><b>/groups/</b> [GET Authorization: JWT <token>] Get list of groups.</li>
         <li><b>/groups/:id/</b> [GET Authorization: JWT <token>] Get detail group by id.<hr></li>
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
         <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.</li>
-        <li><b>/subjects/:id/teachers/</b> [GET Authorization: JWT <token>] Get current teacher for deatail subject<hr></li>
+        <li><b>/subjects/:id/teachers/</b> [GET Authorization: JWT <token>] Get all teachers for deatail subject</li>
+        <li><b>/subjects/:id/files/</b> [GET Authorization: JWT <token>] Get all files for deatail subject<hr></li>
         <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
         <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID</li>
     </ul>

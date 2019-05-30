@@ -10,6 +10,8 @@ ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'main.urls'
 
+API_VERSION_URL = '/api/v1/'
+
 # WSGI_APPLICATION = 'main.wsgi.application'
 ASGI_APPLICATION = "main.routing.application"
 
@@ -30,7 +32,7 @@ INSTALLED_APPS = [
     'news',
 ]
 
-CACHES = {
+"""CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
@@ -41,7 +43,8 @@ CACHES = {
         "KEY_PREFIX": "rediska"
     }
 }
-CACHE_TTL = 60 * 60 * 24
+"""
+CACHE_TTL = 0 #60 * 60 * 24
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

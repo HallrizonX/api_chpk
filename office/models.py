@@ -39,8 +39,11 @@ class Subject(models.Model):
 
 
 def file_folder(instance, filename):
-    filename = instance.title + '.' + filename.split('.')[1]
-    return "files/{0}".format(filename)
+    if filename.split('.')[1] is not 'py':
+        filename = instance.title + '.' + filename.split('.')[1]
+        return "files/{0}".format(filename)
+    else:
+        raise Exception
 
 
 class Files(models.Model):
@@ -68,7 +71,7 @@ class Teacher(models.Model):
     """ Table for saving teacher in relation profile """
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, verbose_name="Профіль викладача")
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name="Предмети викладача")
-    files = models.ManyToManyField(Files, blank=True, verbose_name="Файли викладача")
+    files = models.ManyToManyField(Files, blank=True, verbose_name="Файли викладача", related_name='teachers')
 
     def __str__(self) -> str:
         return "{} {} {}".format(self.profile.name, self.profile.surname, self.profile.last_name)
