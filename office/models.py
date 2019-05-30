@@ -8,13 +8,9 @@ from utils import file_cleanup, change_profile_from_teacher
 class Group(models.Model):
     """ Table for saving group"""
     number = models.CharField(max_length=4, unique=True, verbose_name="Номер групи")
-    slug = models.SlugField(max_length=120, unique=True, verbose_name="URL адреса")
 
     def __str__(self) -> str:
         return f"Група: {self.number}"
-
-    def get_absolute_url(self) -> str:
-        return f"/{self.slug}/"
 
     class Meta:
         verbose_name: str = "Група"
@@ -25,13 +21,9 @@ class Subject(models.Model):
     """ Table for saving subject"""
     name = models.CharField(max_length=120, verbose_name="Назва предмету")
     group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="Група в якій буде викладатися")
-    slug = models.SlugField(max_length=120, verbose_name="URL адреса")
 
     def __str__(self) -> str:
         return f"Предмет - {self.name}, група - {self.group.number}"
-
-    def get_absolute_url(self) -> str:
-        return reverse("subject", kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name: str = "Предмет"
@@ -85,3 +77,4 @@ class Teacher(models.Model):
 
 
 pre_save.connect(change_profile_from_teacher, sender=Teacher)  # Adding to field access value 'teacher'
+

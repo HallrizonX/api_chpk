@@ -33,6 +33,13 @@
         <li><b>/subjects/:id/teachers/</b> [GET Authorization: JWT <token>] Get all teachers for deatail subject</li>
         <li><b>/subjects/:id/files/</b> [GET Authorization: JWT <token>] Get all files for deatail subject<hr></li>
         <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
-        <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID</li>
+        <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID<hr></li>
+        <li><b>/teacher/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current teacher where he explaining</li>
+        <li><b>/student/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current student where he study</li>
+        <li><b>/journals/:group_number/groups/</b> [GET Authorization: JWT <token>] Get list of journals filtered by group</li>
+        <li><b>/journals/:id/</b> [GET Authorization: JWT <token>] Get current journal</li>
+        <li><b>/journals/</b> [GET Authorization: JWT <token>] Get list of all journals</li>
+        <li><b>/marks/</b> [GET Authorization: JWT <token>] Get list of all marks</li>
+        <li><b>/marks/:id/</b> [GET/PUT/PUTCH/DELETE Authorization: JWT <token>] Get current marks</li>
     </ul>
 </ul>

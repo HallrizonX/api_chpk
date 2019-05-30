@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'profiles',
     'office',
     'news',
+    'journal',
 ]
 
 """CACHES = {

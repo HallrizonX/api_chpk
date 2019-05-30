@@ -9,7 +9,7 @@ class NewsDataTest(APITestCase):
     def setUp(self) -> None:
         self.domain: str = 'http://127.0.0.1:8000'
 
-        self.detail_news_url: str = '/api/v1/news/4/'
+        self.detail_news_url: str = '/api/v1/news/1/'
         self.list_news_url: str = '/api/v1/news/'
 
     def test_list_news(self):

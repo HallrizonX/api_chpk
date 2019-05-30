@@ -4,6 +4,7 @@ from .views import (GroupTeachersAPIView, GroupSubjectsAPIView, SubjectTeachersA
                     )
 
 urlpatterns: list = [
+
     path('teachers/<str:pk>/files/', TeacherFilesAPIView.as_view()),
     path('groups/<str:group_number>/teachers/', GroupTeachersAPIView.as_view()),
     path('groups/<str:group_number>/subjects/', GroupSubjectsAPIView.as_view()),
