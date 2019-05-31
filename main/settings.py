@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_summernote',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'news',
     'journal',
 ]
+INSTALLED_APPS += ('django_summernote',)
 
 """CACHES = {
     "default": {
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     }
 }
 """
-CACHE_TTL = 0 #60 * 60 * 24
+CACHE_TTL = 0  # 60 * 60 * 24
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,6 +131,28 @@ USE_L10N = True
 USE_TZ = True
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'airMode': False,
+
+        'width': '80%',
+        'height': '480',
+
+        'lang': 'uk-uk',
+    },
+    'css': (
+        '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.29.0/theme/monokai.min.css',
+    ),
+    'codemirror': {
+        'mode': 'htmlmixed',
+        'lineNumbers': 'true',
+
+        'theme': 'monokai',
+    },
+
+    'lazy': True,
+}
 
 if DEBUG:
     STATICFILES_DIRS = [

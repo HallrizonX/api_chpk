@@ -11,7 +11,7 @@ from journal.routers import router as journal_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('summernote/', include('django_summernote.urls')),
     path('api/v1/', include(journal_router.urls)),  # Journal routers
     path('api/v1/', include(profile_router.urls)),  # Profiles routers
     path('api/v1/', include('office.urls')),  # Additionals for Office routers

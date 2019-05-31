@@ -9,7 +9,29 @@ from rest_framework import status as st
 from office.serializers import TeacherSerializers, SubjectTeacherSerializers, SubjectFilesSerializer
 from office.models import Teacher, Files, Subject
 from office.mixins import ReadOnlyModelMixinViewSet
+from journal.models import Student, Rating
+from journal.serializers import StudentSerializers
 
+class SubjectStudentsAPIView(APIView):
+    """ Get of student for current subject"""
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    def get(self, request, pk) -> Response:
+        queryset = Student.objects.filter(subjects__in=pk)
+        serializer = StudentSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
+    def post(self, request, pk) -> Response:
+        """ Create new file for teacher"""
+        try:
+            teacher = Teacher.objects.get(profile__user=request.user)
+            file = Files.objects.create(title=request.data['title'], subject_id=pk, file=request.data['file'])
+            teacher.files.add(file)
+            teacher.save()
+            serializer = SubjectFilesSerializer(Files.objects.get(id=file.id))
+            return Response({'result': serializer.data}, status=st.HTTP_201_CREATED)
+        except:
+            return Response(status=st.HTTP_403_FORBIDDEN)
 
 class SubjectFilesAPIView(APIView):
     """ Working with list of files for current subject"""

@@ -14,6 +14,10 @@ class Image(models.Model):
     def __str__(self):
         return f"{self.image.url}"
 
+    class Meta:
+        verbose_name_plural = "Фотографії"
+        verbose_name = "Фото"
+
 
 post_delete.connect(file_cleanup, sender=Image)  # Removing file from folder
 
@@ -25,10 +29,10 @@ def preview_image_folder(instance, filename):
 
 
 class News(models.Model):
-    title = models.CharField(max_length=120, verbose_name="Заголовок новини")
-    short_description = models.TextField(max_length=300, verbose_name="Короткий опис новини", blank=True)
+    title = models.TextField(max_length=120, verbose_name="Заголовок новини")
+    short_description = models.TextField(verbose_name="Короткий опис новини", blank=True)
     description = models.TextField(verbose_name="Повний опис новини")
-    date = models.DateTimeField(auto_now_add=True, blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Дата')
 
     preview_image = models.ImageField(upload_to=preview_image_folder, verbose_name="Головна картинка", unique=True)
     images = models.ManyToManyField(Image, verbose_name="Додаткові картинки", blank=True)
@@ -36,5 +40,8 @@ class News(models.Model):
     def __str__(self):
         return f"{self.title}"
 
+    class Meta:
+        verbose_name_plural = "Новини"
+        verbose_name = "Новина"
 
 post_delete.connect(file_cleanup, sender=News)  # Removing file from folder

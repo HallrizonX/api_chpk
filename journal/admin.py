@@ -23,5 +23,7 @@ class RatingAdmin(admin.ModelAdmin):
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
+    class Media:
+        js = ("admin.js",)
 
 admin.site.register(Rating, RatingAdmin)
