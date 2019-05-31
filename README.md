@@ -36,6 +36,7 @@
         <li><b>/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects.</li>
         <li><b>/subjects/:id/</b> [GET Authorization: JWT <token>] Get deteail subject.</li>
         <li><b>/subjects/:id/teachers/</b> [GET Authorization: JWT <token>] Get all teachers for deatail subject</li>
+        <li><b>subjects/:id/students/</b> [GET Authorization: JWT <token>] Get all students who can access to current subject</li>
         <li><b>/subjects/:id/files/</b> [GET Authorization: JWT <token>] Get all files for deatail subject<hr></li>
         <li> <h4>Work with articles</h4></li>
         <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
