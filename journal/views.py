@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import permissions
 
 from rest_framework.response import Response
 from rest_framework import status as st
@@ -14,9 +15,11 @@ from rest_framework import status as st
 from journal.models import Rating, Mark, Student
 from journal.serializers import ListRatingSerializers, DetailRatingSerializers, MarkSerializers
 
+from journal.permissions import TeacherPermission
+
 
 class RatingAPIView(APIView):
-    """ Get either list or detail of journal """
+    """ Get either list journals or detail journal """
 
     def get(self, request, **kwargs) -> Response:
 
@@ -41,7 +44,7 @@ class RatingGroupAPIView(APIView):
 
 
 class RatingCurrentStudentAPIView(APIView):
-    """ Get list of journal filtered by group number"""
+    """ Get list of journal for current student"""
 
     def get(self, request) -> Response:
         ratings = Rating.objects.filter(student__profile__user=request.user)
@@ -51,6 +54,8 @@ class RatingCurrentStudentAPIView(APIView):
 
 
 class RatingTeacherStudentAPIView(APIView):
+    """ Get list of journal for current teacher"""
+
     def get(self, request) -> Response:
         ratings = Rating.objects.filter(subject__teacher__profile__user=request.user)
         serializer = ListRatingSerializers(ratings, many=True)
@@ -59,5 +64,7 @@ class RatingTeacherStudentAPIView(APIView):
 
 
 class MarkViewSet(ModelViewSet):
+    """ Work with marks"""
     serializer_class = MarkSerializers
     queryset = Mark.objects.all()
+    permission_classes = (TeacherPermission,)

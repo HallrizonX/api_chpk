@@ -1,5 +1,5 @@
-from profiles.models import Profile
 import os
+from profiles.models import Profile
 
 
 def file_cleanup(sender, **kwargs):
@@ -27,7 +27,3 @@ def change_profile_from_teacher(sender, **kwargs):
     profile = Profile.objects.get(id=instance.profile.id)
     profile.access = 'teacher'
     profile.save()
-
-
-
-
