@@ -31,4 +31,5 @@ class OfficeAPIView(APIView):
             serializer = TeacherSerializers(user)
         elif user.access == 'student':
             serializer = ProfileSerializers(user)
+
         return serializer.data

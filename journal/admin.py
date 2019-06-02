@@ -9,7 +9,7 @@ class RatingAdmin(admin.ModelAdmin):
     list_display = ('student', 'subject')
     search_fields = ('student__profile__name', 'student__profile__surname', 'student__profile__last_name',
                      'subject__name', 'subject__group__number')
-    list_filter = ('subject', 'student')
+    list_filter = ('subject', 'student', 'subject__group')
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "marks" and request.method == 'GET':

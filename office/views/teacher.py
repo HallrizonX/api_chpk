@@ -8,8 +8,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
 
-from office.serializers import (TeacherSerializers, FilesTeacherSerializer, SubjectFilesSerializer)
-from office.models import Teacher, Files
+from office.serializers import (TeacherSerializers, FilesTeacherSerializer, SubjectFilesSerializer, GroupSubjectSerializers)
+from office.models import Teacher, Files, Group
+from profiles.models import Profile
 from office.mixins import ReadOnlyModelMixinViewSet
 
 
@@ -20,6 +21,13 @@ class TeacherFilesAPIView(APIView):
         serializer = SubjectFilesSerializer(queryset, many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+
+class TeacherGroupsAPIView(APIView):
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    def get(self, request) -> Response:
+        queryset = Group.objects.filter(teachers__profile__user=request.user)
+        serializer = GroupSubjectSerializers(queryset, many=True)
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
 class TeacherFilesViewSet(ModelViewSet):
     queryset = Files.objects.all()

@@ -1,12 +1,13 @@
 from django.db import models
 
 from profiles.models import Profile
-from office.models import Subject
+from office.models import Subject, Group
 
 
 class Student(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, verbose_name="Профіль студента")
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name="Предмети студента ")
+    groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="Група студента", blank=True)
 
     def __str__(self) -> str:
         return "{} {} {}".format(self.profile.name, self.profile.surname, self.profile.last_name)

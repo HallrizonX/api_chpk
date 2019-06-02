@@ -1,10 +1,11 @@
 from django.urls import path
 from .views import (GroupTeachersAPIView, GroupSubjectsAPIView, SubjectTeachersAPIView, OfficeAPIView,
-                    SubjectFilesAPIView, TeacherFilesAPIView, SubjectDetailFilesAPIView, SubjectStudentsAPIView
+                    SubjectFilesAPIView, TeacherFilesAPIView, SubjectDetailFilesAPIView, SubjectStudentsAPIView,
+                    TeacherGroupsAPIView
                     )
 
 urlpatterns: list = [
-
+    path('teacher/groups/', TeacherGroupsAPIView.as_view()),
     path('teachers/<str:pk>/files/', TeacherFilesAPIView.as_view()),
     path('groups/<str:group_number>/teachers/', GroupTeachersAPIView.as_view()),
     path('groups/<str:group_number>/subjects/', GroupSubjectsAPIView.as_view()),

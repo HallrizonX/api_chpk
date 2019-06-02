@@ -64,6 +64,8 @@ class Teacher(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, verbose_name="Профіль викладача")
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name="Предмети викладача")
     files = models.ManyToManyField(Files, blank=True, verbose_name="Файли викладача", related_name='teachers')
+    groups = models.ManyToManyField(Group, blank=True, verbose_name="Групи в яких викладає викладач",
+                                    related_name='teachers')
 
     def __str__(self) -> str:
         return "{} {} {}".format(self.profile.name, self.profile.surname, self.profile.last_name)
