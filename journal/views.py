@@ -19,11 +19,12 @@ from office.serializers import SubjectTeacherSerializers
 from journal.serializers import ListRatingSerializers, DetailRatingSerializers, MarkSerializers
 
 from journal.permissions import TeacherPermission
-
+from utils import bad_request
 
 class RatingAPIView(APIView):
     """ Get either list journals or detail journal """
 
+    @bad_request
     def get(self, request, **kwargs) -> Response:
 
         if kwargs.get('pk') is None:
@@ -39,6 +40,7 @@ class RatingAPIView(APIView):
 class RatingGroupAPIView(APIView):
     """ Get list of journal filtered by group number"""
 
+    @bad_request
     def get(self, request, group_number) -> Response:
         ratings = Rating.objects.filter(subject__group__number=group_number)
         serializer = ListRatingSerializers(ratings, many=True)
@@ -49,6 +51,7 @@ class RatingGroupAPIView(APIView):
 class RatingCurrentStudentAPIView(APIView):
     """ Get list of journal for current student"""
 
+    @bad_request
     def get(self, request) -> Response:
         ratings = Rating.objects.filter(student__profile__user=request.user)
         serializer = ListRatingSerializers(ratings, many=True)
@@ -60,6 +63,7 @@ class RatingTeacherAPIView(APIView):
     """ Get list of journal for current teacher"""
     permission_classes = (TeacherPermission,)
 
+    @bad_request
     def get(self, request) -> Response:
         ratings = Rating.objects.filter(subject__teacher__profile__user=request.user)
         serializer = ListRatingSerializers(ratings, many=True)
@@ -71,6 +75,7 @@ class RatingTeacherSubjectInGroupAPIView(APIView):
     """ Get list of journals for current group where teacher existing"""
     permission_classes = (TeacherPermission,)
 
+    @bad_request
     def get(self, request, group_number) -> Response:
         profile = Profile.objects.get(user=request.user)
         journals = Rating.objects.filter(subject__group__number=group_number, subject__teacher__profile=profile)
@@ -83,6 +88,7 @@ class RatingTeacherGroupSubjectsAPIView(APIView):
     """ Get list of journals for current group where teacher existing"""
     permission_classes = (TeacherPermission,)
 
+    @bad_request
     def get(self, request, group_number) -> Response:
         profile = Profile.objects.get(user=request.user)
 
@@ -96,6 +102,7 @@ class RatingTeacherSubjectsAPIView(APIView):
     """ Get list of journals for current subject where teacher existing"""
     permission_classes = (TeacherPermission,)
 
+    @bad_request
     def get(self, request, subject_id) -> Response:
         profile = Profile.objects.get(user=request.user)
         journals = Rating.objects.filter(subject_id=subject_id, subject__teacher__profile=profile)
