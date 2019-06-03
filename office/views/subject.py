@@ -9,6 +9,9 @@ from rest_framework import status as st
 from office.serializers import TeacherSerializers, SubjectTeacherSerializers, SubjectFilesSerializer
 from office.models import Teacher, Files, Subject
 from office.mixins import ReadOnlyModelMixinViewSet
+
+from profiles.models import Profile
+
 from journal.models import Student, Rating
 from journal.serializers import StudentSerializers
 
@@ -111,3 +114,27 @@ class SubjectViewSet(ReadOnlyModelMixinViewSet):
     model = Subject
     queryset = Subject.objects.all()
     serializer_class = SubjectTeacherSerializers
+
+    @bad_request
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    def list(self, request, *args, **kwargs) -> Response:
+        profile = Profile.objects.get(user=request.user)
+
+        if profile.access == 'student':
+            self.queryset = self.model.objects.filter(student__profile=profile)
+
+        serializer = self.serializer_class(self.queryset, many=True)
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
+    @bad_request
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    def retrieve(self, request, *args, **kwargs) -> Response:
+        profile = Profile.objects.get(user=request.user)
+
+        if profile.access == 'student':
+            self.queryset = self.model.objects.objects.get(pk=kwargs.get('pk'), student__profile=profile)
+        else:
+            self.queryset = self.model.objects.objects.get(pk=kwargs.get('pk'))
+
+        serializer = self.serializer_class(self.queryset)
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)

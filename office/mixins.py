@@ -5,7 +5,6 @@ from django.utils.decorators import method_decorator
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
-
 from utils import bad_request
 
 
@@ -33,4 +32,3 @@ class ReadOnlyModelMixinViewSet(ReadOnlyModelViewSet):
         queryset = self.model.objects.get(pk=kwargs.get('pk'))
         serializer = self.serializer_class(queryset)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
