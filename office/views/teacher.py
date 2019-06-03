@@ -10,11 +10,15 @@ from rest_framework import status as st
 
 from office.serializers import (TeacherSerializers, FilesTeacherSerializer, SubjectFilesSerializer, GroupSubjectSerializers)
 from office.models import Teacher, Files, Group
+
 from profiles.models import Profile
 from office.mixins import ReadOnlyModelMixinViewSet
 
+from utils import bad_request
+
 
 class TeacherFilesAPIView(APIView):
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, pk) -> Response:
         queryset = Files.objects.filter(subject__teacher=pk)
@@ -23,16 +27,19 @@ class TeacherFilesAPIView(APIView):
 
 
 class TeacherGroupsAPIView(APIView):
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request) -> Response:
         queryset = Group.objects.filter(teachers__profile__user=request.user)
         serializer = GroupSubjectSerializers(queryset, many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+
 class TeacherFilesViewSet(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesTeacherSerializer
 
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def list(self, request, *args, **kwargs) -> Response:
         """ Get all files for current teacher"""
@@ -42,6 +49,7 @@ class TeacherFilesViewSet(ModelViewSet):
 
         return Response({'result': serializer.data})
 
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def retrieve(self, request, *args, **kwargs) -> Response:
 

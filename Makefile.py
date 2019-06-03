@@ -1,8 +1,6 @@
 import os
 import argparse
 
-
-
 parser = argparse.ArgumentParser(description='My example explanation')
 
 parser.add_argument('cmd', default=None, type=str)
@@ -11,8 +9,7 @@ args = parser.parse_args()
 
 def makemigrations():
     db_change = bool(os.system('python manage.py makemigrations'))
-    if db_change:
-        os.system('python manage.py migrate')
+    os.system('python manage.py migrate')
 
 
 if args.cmd == 'db':

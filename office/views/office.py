@@ -15,16 +15,18 @@ from office.serializers import TeacherSerializers, GroupSubjectSerializers, File
 from office.models import Teacher, Group, Files, Subject
 from office.mixins import ReadOnlyModelMixinViewSet
 
+from utils import bad_request
 
 class OfficeAPIView(APIView):
-    """ Get all teachers filter by group number """
-
+    """ Get current profile by token """
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request) -> Response:
         user = Profile.objects.get(user=request.user)
 
         return Response({'result': self.get_office(user)}, status=st.HTTP_200_OK)
 
+    @bad_request
     def get_office(self, user):
         if user.access == 'teacher':
             user = Teacher.objects.get(profile=user)

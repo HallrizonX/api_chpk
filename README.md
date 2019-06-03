@@ -19,6 +19,7 @@
         <li><b>/profiles/</b> [GET Authorization: JWT <token>] All profiles.</li>
         <li><b>/profiles/:id/</b> [GET Authorization: JWT <token>] Get detail profile.<hr></li>
         <li> <h4>Work with teachers</h4></li>
+         <li><b>/teacher/groups/</b> [GET Authorization: JWT <token>] Get all groups where teacher explaining </li>
         <li><b>/teachers/files/</b> [GET Authorization: JWT <token>] <b>Security</b> get all files for current teacher who was did authorizations by token</li>
         <li><b>/teachers/files/:file_id/</b> [GET Authorization: JWT <token>] <b>Security</b> get file chose by id and for current teacher who was did authorizations by token</li>
         <li><b>/teachers/</b> [GET Authorization: JWT <token>] Get list of teachers.</li>
@@ -42,6 +43,7 @@
         <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
         <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID<hr></li>
         <li> <h4>Work with journal</h4></li>
+        <li><b>/office/</b> [GET Authorization: JWT <token>] Get current office by token</li>
         <li><b>/teacher/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current teacher where he explaining</li>
         <li><b>/student/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current student where he study</li>
         <li><b>/journals/:group_number/groups/</b> [GET Authorization: JWT <token>] Get list of journals filtered by group</li>

@@ -12,8 +12,11 @@ from office.mixins import ReadOnlyModelMixinViewSet
 from journal.models import Student, Rating
 from journal.serializers import StudentSerializers
 
+from utils import bad_request
+
 class SubjectStudentsAPIView(APIView):
-    """ Get of student for current subject"""
+    """ Get all students who can access to current subject"""
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, pk) -> Response:
         queryset = Student.objects.filter(subjects__in=pk)
@@ -21,20 +24,10 @@ class SubjectStudentsAPIView(APIView):
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    def post(self, request, pk) -> Response:
-        """ Create new file for teacher"""
-        try:
-            teacher = Teacher.objects.get(profile__user=request.user)
-            file = Files.objects.create(title=request.data['title'], subject_id=pk, file=request.data['file'])
-            teacher.files.add(file)
-            teacher.save()
-            serializer = SubjectFilesSerializer(Files.objects.get(id=file.id))
-            return Response({'result': serializer.data}, status=st.HTTP_201_CREATED)
-        except:
-            return Response(status=st.HTTP_403_FORBIDDEN)
 
 class SubjectFilesAPIView(APIView):
     """ Working with list of files for current subject"""
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, pk) -> Response:
         queryset = Files.objects.filter(subject__id=pk)
@@ -42,6 +35,7 @@ class SubjectFilesAPIView(APIView):
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+    @bad_request
     def post(self, request, pk) -> Response:
         """ Create new file for teacher"""
         try:
@@ -66,6 +60,7 @@ class SubjectDetailFilesAPIView(APIView):
         except Files.DoesNotExist:
             return Response({f'File with id {pk_file} does not exist'}, status=st.HTTP_400_BAD_REQUEST)
 
+    @bad_request
     def patch(self, request, pk, pk_file) -> Response:
         file = Files.objects.get(id=pk_file)
 
@@ -80,6 +75,7 @@ class SubjectDetailFilesAPIView(APIView):
         serializer = SubjectFilesSerializer(file)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+    @bad_request
     def put(self, request, pk, pk_file) -> Response:
 
         try:
@@ -87,12 +83,13 @@ class SubjectDetailFilesAPIView(APIView):
             file.file = request.data['file']
             file.title = request.data['title']
             file.save()
-        except:
-            return Response(status=st.HTTP_400_BAD_REQUEST)
+        except Files.DoesNotExist:
+            return Response({'message': f'File with id {pk_file} does not exist'},status=st.HTTP_400_BAD_REQUEST)
 
         serializer = SubjectFilesSerializer(file)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+    @bad_request
     def delete(self, request, pk, pk_file) -> Response:
         file = Files.objects.get(id=pk_file)
         file.delete()

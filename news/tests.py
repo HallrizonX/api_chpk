@@ -27,14 +27,14 @@ class NewsDataTest(APITestCase):
         for item in json.loads(response.content)['data']['result']:
             # Check out if values aren't None
             self.assertIsNotNone(
-                (item['id'], item['title'], item['short_description'], item['preview_image'], item['date'])
+                (item['id'], item['title'], item['short_description'], item['preview_image'], item['pub_date'])
             )
             # Check out if keys is in dict
             self.assertIn('id', item)
             self.assertIn('title', item)
             self.assertIn('short_description', item)
             self.assertIn('preview_image', item)
-            self.assertIn('date', item)
+            self.assertIn('pub_date', item)
 
             # Check out if keys isn't in dict, because that keys in detail news
             self.assertNotIn('description', item)
@@ -58,7 +58,7 @@ class NewsDataTest(APITestCase):
 
         # Check out if values aren't None
         self.assertIsNotNone(
-            (item['id'], item['title'], item['short_description'], item['preview_image'], item['date'],
+            (item['id'], item['title'], item['short_description'], item['preview_image'], item['pub_date'],
              item['description'], item['images'])
         )
 

@@ -6,12 +6,15 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status as st
 
+from utils import bad_request
+
 
 class ReadOnlyModelMixinViewSet(ReadOnlyModelViewSet):
     model = None
     queryset = None
     serializer_class = None
 
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def list(self, request, *args, **kwargs) -> Response:
         assert self.queryset is not None, "Queryset is require"
@@ -20,6 +23,7 @@ class ReadOnlyModelMixinViewSet(ReadOnlyModelViewSet):
         serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+    @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def retrieve(self, request, *args, **kwargs) -> Response:
         assert self.queryset is not None, "Queryset is require"

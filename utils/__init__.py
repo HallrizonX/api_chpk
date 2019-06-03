@@ -1,4 +1,12 @@
 import os
+from functools import wraps
+
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.contrib.auth.models import  User
+
+from rest_framework.response import Response
+from rest_framework import status as st
+
 from profiles.models import Profile
 
 
@@ -27,3 +35,17 @@ def change_profile_from_teacher(sender, **kwargs):
     profile = Profile.objects.get(id=instance.profile.id)
     profile.access = 'teacher'
     profile.save()
+
+
+def bad_request(fnc):
+    @wraps(fnc)
+    def inner(request, *args, **kwargs):
+        try:
+            return fnc(request, *args, **kwargs)
+        except ObjectDoesNotExist:
+            return Response({'message': 'Object does not exist'}, status=st.HTTP_400_BAD_REQUEST)
+        except MultipleObjectsReturned:
+            return Response({'message': 'Get more then one object'}, status=st.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'message': 'Are you sure in your action? Something wrong!'}, status=st.HTTP_423_LOCKED)
+    return inner
