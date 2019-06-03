@@ -2,6 +2,7 @@ from django.db import models
 
 from profiles.models import Profile
 from office.models import Subject, Group
+from django.contrib.auth.models import User
 
 
 class Student(models.Model):
@@ -18,6 +19,7 @@ class Student(models.Model):
 
 
 class Mark(models.Model):
+    author = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     mark = models.CharField(max_length=2, verbose_name='Оцінка')
     date = models.DateField(verbose_name='Дата')
 
@@ -28,7 +30,6 @@ class Mark(models.Model):
         verbose_name: str = "Відмітка"
         verbose_name_plural: str = "Відмітки"
 
-
 class Rating(models.Model):
     subject = models.ForeignKey(Subject, blank=True, on_delete=models.CASCADE, verbose_name="Предмет")
     marks = models.ManyToManyField(Mark, blank=True, verbose_name="Оцінки")
@@ -38,5 +39,5 @@ class Rating(models.Model):
         return f'{self.student.profile.surname} {self.student.profile.name} {self.student.profile.last_name}, {self.subject.name}'
 
     class Meta:
-        verbose_name: str = "Журнал"
-        verbose_name_plural: str = "Журнали"
+        verbose_name: str = "Щоденник"
+        verbose_name_plural: str = "Щоденники"

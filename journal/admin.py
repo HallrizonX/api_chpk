@@ -1,8 +1,9 @@
 from django.contrib import admin
 from journal.models import Student, Mark, Rating
-
+from django.contrib.auth.models import User
 admin.site.register(Student)
-admin.site.register(Mark)
+
+
 
 
 class RatingAdmin(admin.ModelAdmin):
@@ -26,4 +27,6 @@ class RatingAdmin(admin.ModelAdmin):
     class Media:
         js = ("admin.js",)
 
+
 admin.site.register(Rating, RatingAdmin)
+admin.site.register(Mark)
