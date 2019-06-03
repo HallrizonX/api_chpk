@@ -126,15 +126,3 @@ class SubjectViewSet(ReadOnlyModelMixinViewSet):
         serializer = self.serializer_class(self.queryset, many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
-    @bad_request
-    @method_decorator(cache_page(settings.CACHE_TTL))
-    def retrieve(self, request, *args, **kwargs) -> Response:
-        profile = Profile.objects.get(user=request.user)
-
-        if profile.access == 'student':
-            self.queryset = self.model.objects.objects.get(pk=kwargs.get('pk'), student__profile=profile)
-        else:
-            self.queryset = self.model.objects.objects.get(pk=kwargs.get('pk'))
-
-        serializer = self.serializer_class(self.queryset)
-        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
