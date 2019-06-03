@@ -2,7 +2,6 @@ import os
 from functools import wraps
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.contrib.auth.models import  User
 
 from rest_framework.response import Response
 from rest_framework import status as st
@@ -38,6 +37,7 @@ def change_profile_from_teacher(sender, **kwargs):
 
 
 def bad_request(fnc):
+    """ Error handler"""
     @wraps(fnc)
     def inner(request, *args, **kwargs):
         try:

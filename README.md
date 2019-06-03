@@ -42,10 +42,14 @@
         <li> <h4>Work with articles</h4></li>
         <li><b>/news/</b> [GET Authorization: JWT <token>] Get list of news</li>
         <li><b>/news/:id/</b> [GET Authorization: JWT <token>] Get current news by ID<hr></li>
-        <li> <h4>Work with journal</h4></li>
+        <li><h4>Work with journal</h4></li>
         <li><b>/office/</b> [GET Authorization: JWT <token>] Get current office by token</li>
         <li><b>/teacher/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current teacher where he explaining</li>
+        <li><b>/teacher/groups/:group_number/subjects/</b> [GET Authorization: JWT <token>] Get list of subjects for current group where teacher existing</li>
+        <li><b>/teacher/groups/:group_number/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current group where teacher existing</li>
+        <li><b>/teacher/subjects/:subject_id/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current subject where teacher existing</li>
         <li><b>/student/journals/</b> [GET Authorization: JWT <token>] Get list of journals for current student where he study</li>
+        <li><b>/student/groups/</b> [GET Authorization: JWT <token>] Get list of journals for current student where he study</li>
         <li><b>/journals/:group_number/groups/</b> [GET Authorization: JWT <token>] Get list of journals filtered by group</li>
         <li><b>/journals/:id/</b> [GET Authorization: JWT <token>] Get current journal</li>
         <li><b>/journals/</b> [GET Authorization: JWT <token>] Get list of all journals</li>
