@@ -24,11 +24,17 @@ class Mark(models.Model):
     date = models.DateField(verbose_name='Дата')
 
     def __str__(self):
-        return f'Оцінка-{self.mark} | День-{self.date.day} Місяць-{self.date.month} Рік-{self.date.year}'
+        rating = self.rating_set.last()
+
+        try:
+            return f'{self.mark} | {rating.subject.name} | {self.date.day}:{self.date.month}:{self.date.year}'
+        except AttributeError:
+            return f'{self.mark} | {self.date.day}:{self.date.month}:{self.date.year}'
 
     class Meta:
         verbose_name: str = "Відмітка"
         verbose_name_plural: str = "Відмітки"
+
 
 class Rating(models.Model):
     subject = models.ForeignKey(Subject, blank=True, on_delete=models.CASCADE, verbose_name="Предмет")

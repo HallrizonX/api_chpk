@@ -18,7 +18,7 @@ from journal.serializers import StudentSerializers
 from utils import bad_request
 
 class SubjectStudentsAPIView(APIView):
-    """ Get all students who can access to current subject"""
+    """ Get all students who can access to current subject """
     @bad_request
     @method_decorator(cache_page(settings.CACHE_TTL))
     def get(self, request, pk) -> Response:
@@ -27,6 +27,16 @@ class SubjectStudentsAPIView(APIView):
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
+
+class SubjectStudentNotJournalsAPIView(APIView):
+    """ Get all students who can access to current subject and haven't a personal journal"""
+    @bad_request
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    def get(self, request, pk) -> Response:
+        queryset = Student.objects.exclude(rating__subject_id=pk).filter(subjects__in=pk)
+        serializer = StudentSerializers(queryset, many=True)
+
+        return Response({'result': serializer.data}, status=st.HTTP_200_OK)
 
 class SubjectFilesAPIView(APIView):
     """ Working with list of files for current subject"""
