@@ -1,5 +1,8 @@
 from django.contrib import admin
+
 from profiles.models import Profile
+from journal.admin_tools.filters import FilesSubjectListFilter, SubjectListFilter
+
 from .models import (Group, Subject, Files, Teacher)
 
 
@@ -19,6 +22,7 @@ class ModelFilesInline(admin.StackedInline):
 
 class SubjectAdmin(admin.ModelAdmin):
     inlines = [ModelFilesInline]
+    search_fields = ('group__number', 'name')
 
     def get_queryset(self, request):
         """ Get all marks for current profile"""
@@ -33,7 +37,7 @@ class SubjectAdmin(admin.ModelAdmin):
 
 
 class FilesAdmin(admin.ModelAdmin):
-
+    list_filter = (FilesSubjectListFilter,)
     def get_queryset(self, request):
         """ Get all marks for current profile"""
         try:

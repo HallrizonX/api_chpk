@@ -21,6 +21,7 @@ class MarkSerializers(serializers.ModelSerializer):
 
 
 class DetailRatingSerializers(serializers.ModelSerializer):
+    """ Serializer for detail journal, that can be filter pk and get current journal"""
     subject = SubjectTeacherSerializers()
     marks = MarkSerializers(many=True)
     student = StudentSerializers()
@@ -31,6 +32,7 @@ class DetailRatingSerializers(serializers.ModelSerializer):
 
 
 class ListRatingSerializers(serializers.ModelSerializer):
+    """ Serializer which get list of journals"""
     student = StudentSerializers()
     detail_journal = serializers.SerializerMethodField(read_only=True)
 

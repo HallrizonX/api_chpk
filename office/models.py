@@ -8,7 +8,6 @@ from utils import file_cleanup, change_profile_from_teacher
 class Group(models.Model):
     """ Table for saving group"""
     number = models.CharField(max_length=4, unique=True, verbose_name="Номер групи")
-
     def __str__(self) -> str:
         return f"Група: {self.number}"
 

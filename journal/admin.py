@@ -1,10 +1,10 @@
 from django.contrib import admin
-from journal.models import Student, Mark, Rating
-from django.contrib.auth.models import User
+
 from profiles.models import Profile
 from office.models import Subject
 
-from journal.admin_tools.filters import TeacherSubjectsListFilter
+from journal.admin_tools.filters import TeacherSubjectsListFilter, JournalsSubjectListFilter
+from journal.models import Student, Mark, Rating
 
 
 class MarksAdmin(admin.ModelAdmin):
@@ -33,13 +33,11 @@ class MarksAdmin(admin.ModelAdmin):
             return Mark.objects.filter(rating__student__profile=profile)
 
 
-
 class RatingAdmin(admin.ModelAdmin):
     list_display = ('student', 'subject')
     search_fields = ('student__profile__name', 'student__profile__surname', 'student__profile__last_name',
                      'subject__name', 'subject__group__number')
-    list_filter = ('subject', 'student', 'subject__group')
-
+    list_filter = (JournalsSubjectListFilter,)
     filter_horizontal = ('marks',)
 
     def get_queryset(self, request):
