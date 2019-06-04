@@ -47,5 +47,6 @@ def bad_request(fnc):
         except MultipleObjectsReturned:
             return Response({'message': 'Get more then one object'}, status=st.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            print(e)
             return Response({'message': 'Are you sure in your action? Something wrong!'}, status=st.HTTP_423_LOCKED)
     return inner

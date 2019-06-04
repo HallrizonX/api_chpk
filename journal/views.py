@@ -13,7 +13,7 @@ from rest_framework import status as st
 
 from profiles.models import Profile
 from journal.models import Rating, Mark, Student
-from office.models import Group, Subject
+from office.models import Group, Subject, Teacher
 from office.serializers import SubjectTeacherSerializers
 
 from journal.serializers import ListRatingSerializers, DetailRatingSerializers, MarkSerializers
@@ -21,21 +21,22 @@ from journal.serializers import ListRatingSerializers, DetailRatingSerializers, 
 from journal.permissions import TeacherPermission
 from utils import bad_request
 
+
 class RatingAPIView(APIView):
     """ Get either list journals or detail journal """
 
     @bad_request
     def get(self, request, **kwargs) -> Response:
+        profile = Profile.objects.get(user=request.user)
 
         if kwargs.get('pk') is None:
-            ratings = Rating.objects.all()
+            ratings = Rating.objects.filter(subject__teacher__profile=profile)
             serializer = ListRatingSerializers(ratings, many=True)
         else:
-            rating = Rating.objects.get(id=kwargs.get('pk'))
+            rating = Rating.objects.get(id=kwargs.get('pk'), subject__teacher__profile=profile)
             serializer = DetailRatingSerializers(rating)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
 
 class RatingGroupAPIView(APIView):
     """ Get list of journal filtered by group number"""
@@ -46,7 +47,6 @@ class RatingGroupAPIView(APIView):
         serializer = ListRatingSerializers(ratings, many=True)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
-
 
 class RatingCurrentStudentAPIView(APIView):
     """ Get list of journal for current student"""
@@ -109,6 +109,7 @@ class RatingTeacherSubjectsAPIView(APIView):
         serializer = ListRatingSerializers(journals, many=True)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
 
 class MarkViewSet(ModelViewSet):
     """ Work with marks"""

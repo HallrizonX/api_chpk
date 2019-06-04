@@ -58,6 +58,9 @@ class RatingAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """ Set default teacher"""
         if db_field.name == 'subject':
+            if request.user.is_superuser:
+                return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
             kwargs["queryset"] = Subject.objects.filter(teacher__profile__user=request.user)
             kwargs['initial'] = request.user.id
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

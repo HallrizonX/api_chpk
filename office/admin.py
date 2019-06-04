@@ -3,7 +3,22 @@ from profiles.models import Profile
 from .models import (Group, Subject, Files, Teacher)
 
 
+class ModelFilesInline(admin.StackedInline):
+    model = Files
+
+    def get_queryset(self, request):
+        """ Get all marks for current profile"""
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            if request.user.is_superuser:
+                return Files.objects.all()
+
+        if profile.access == 'teacher':
+            return Files.objects.filter(subject__teacher__profile=profile)
+
 class SubjectAdmin(admin.ModelAdmin):
+    inlines = [ModelFilesInline]
 
     def get_queryset(self, request):
         """ Get all marks for current profile"""
@@ -28,13 +43,17 @@ class FilesAdmin(admin.ModelAdmin):
                 return Files.objects.all()
 
         if profile.access == 'teacher':
-            return Files.objects.filter(teachers__profile__user=request.user)
+            return Files.objects.filter(subject__teacher__profile__user=request.user)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """ Set default teacher"""
-        if db_field.name == 'subject':
-            kwargs["queryset"] = Subject.objects.filter(teacher__profile__user=request.user)
+        if db_field.name == 'subject' and request.method == 'GET':
+            if request.user.is_superuser:
+                kwargs["queryset"] = Subject.objects.all()
+            else:
+                kwargs["queryset"] = Subject.objects.filter(teacher__profile__user=request.user)
             kwargs['initial'] = request.user.id
+
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
