@@ -23,7 +23,6 @@ class MarkSerializers(serializers.ModelSerializer):
 class DetailRatingSerializers(serializers.ModelSerializer):
     subject = SubjectTeacherSerializers()
     marks = MarkSerializers(many=True)
-    student = StudentSerializers()
 
     class Meta:
         model = Rating
