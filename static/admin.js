@@ -11,7 +11,5 @@ django.jQuery( document ).ready(function() {
             });
             $("#id_student").html(str)
         })
-
     })
-
 });

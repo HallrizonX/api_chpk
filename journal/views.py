@@ -28,12 +28,11 @@ class RatingAPIView(APIView):
     @bad_request
     def get(self, request, **kwargs) -> Response:
         profile = Profile.objects.get(user=request.user)
-
         if kwargs.get('pk') is None:
             ratings = Rating.objects.filter(subject__teacher__profile=profile)
             serializer = ListRatingSerializers(ratings, many=True)
         else:
-            rating = Rating.objects.get(id=kwargs.get('pk'), subject__teacher__profile=profile)
+            rating = Rating.objects.get(id=str(kwargs.get('pk')), subject__teacher__profile=profile)
             serializer = DetailRatingSerializers(rating)
 
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
