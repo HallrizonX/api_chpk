@@ -36,7 +36,7 @@ class UserProfile:
         self.access = self.profile.access
 
     @property
-    def get_groups(self) -> list:
+    def get_groups(self) -> Group:
         if self.access == 'teacher':
             return Group.objects.filter(teachers__profile=self.profile)
         elif self.access == 'student':
@@ -44,9 +44,10 @@ class UserProfile:
 
         raise Group.DoesNotExist("Groups don't exist")
 
-    def get_journals_by_subject_id(self,subject_id) -> list:
+    def get_journals_by_subject_id(self, subject_id) -> Rating:
         if self.access == 'teacher':
-            return Rating.objects.filter(subject=Subject.objects.get(id=subject_id, subject__teacher__profile=self.profile))
+            return Rating.objects.filter(
+                subject=Subject.objects.get(id=subject_id, subject__teacher__profile=self.profile))
         elif self.access == 'student':
             return Rating.objects.filter(student__profile=self.profile, subject=Subject.objects.get(id=subject_id))
 
@@ -56,7 +57,7 @@ class UserProfile:
 class GroupAPIView(ListAPIView):
     serializer_class = GroupListSerializers
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         profile = UserProfile(request)
         serializer = self.serializer_class(profile.get_groups, many=True)
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
@@ -65,7 +66,7 @@ class GroupAPIView(ListAPIView):
 class JournalAPIView(ListAPIView):
     serializer_class = JournalSerializers
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         profile = UserProfile(request)
         subject_id = kwargs.get('subject_id')
 

@@ -67,7 +67,7 @@ class Teacher(models.Model):
                                     related_name='teachers')
 
     def __str__(self) -> str:
-        return "{} {} {}".format(self.profile.name, self.profile.surname, self.profile.last_name)
+        return "{} | {} {} {}".format(self.profile.user.username, self.profile.name, self.profile.surname, self.profile.last_name)
 
     def get_absolute_url(self) -> str:
         return reverse('teacher', kwargs={"slug": self.profile.user.username})

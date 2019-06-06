@@ -61,7 +61,12 @@ class FilesAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class TeacherAdmin(admin.ModelAdmin):
+    search_fields = ('profile__user__username', 'profile__name', 'profile__surname', 'profile__last_name')
+    list_filter = ('groups', 'subjects',)
+
+
 admin.site.register(Group)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Files, FilesAdmin)
-admin.site.register(Teacher)
+admin.site.register(Teacher, TeacherAdmin)
