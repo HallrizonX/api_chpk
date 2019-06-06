@@ -3,6 +3,8 @@ from django.db import models
 from profiles.models import Profile
 from office.models import Subject, Group
 from django.contrib.auth.models import User
+from string import Template
+
 
 
 class Student(models.Model):
