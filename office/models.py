@@ -2,14 +2,19 @@ from django.db import models
 from profiles.models import Profile
 from django.urls import reverse
 from django.db.models.signals import post_delete, pre_save
+
 from utils import file_cleanup, change_profile_from_teacher
 
 
 class Group(models.Model):
-    """ Table for saving group"""
     number = models.CharField(max_length=4, unique=True, verbose_name="Номер групи")
+
     def __str__(self) -> str:
         return f"Група: {self.number}"
+
+    @property
+    def get_teachers(self):
+        return Teacher.objects.filter(groups__number=self.number)
 
     class Meta:
         verbose_name: str = "Група"
@@ -23,6 +28,9 @@ class Subject(models.Model):
 
     def __str__(self) -> str:
         return f"Предмет - {self.name}, група - {self.group.number}"
+
+    def get_teachers(self):
+        return Teacher.objects.filter(subjects__in=self.id)
 
     class Meta:
         verbose_name: str = "Предмет"
@@ -50,6 +58,10 @@ class Files(models.Model):
     def get_absolute_url(self) -> str:
         return reverse("media", kwargs={"slug": self.file.path})
 
+    @property
+    def get_subject(self) -> Subject:
+        return Files.objects.get(subject=self.subject)
+
     class Meta:
         verbose_name: str = "Файл"
         verbose_name_plural: str = "Файли"
@@ -59,7 +71,6 @@ post_delete.connect(file_cleanup, sender=Files)  # Removing file from folder
 
 
 class Teacher(models.Model):
-    """ Table for saving teacher in relation profile """
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, verbose_name="Профіль викладача")
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name="Предмети викладача")
     files = models.ManyToManyField(Files, blank=True, verbose_name="Файли викладача", related_name='teachers')
@@ -67,10 +78,20 @@ class Teacher(models.Model):
                                     related_name='teachers')
 
     def __str__(self) -> str:
-        return "{} | {} {} {}".format(self.profile.user.username, self.profile.name, self.profile.surname, self.profile.last_name)
+        return "{} | {} {} {}".format(self.profile.user.username, self.profile.name, self.profile.surname,
+                                      self.profile.last_name)
 
-    def get_absolute_url(self) -> str:
-        return reverse('teacher', kwargs={"slug": self.profile.user.username})
+    @property
+    def get_subjects(self) -> Subject:
+        return Subject.objects.filter(teacher__profile=self.profile)
+
+    @property
+    def get_groups(self) -> Group:
+        return Group.objects.filter(teachers__profile=self.profile)
+
+    @property
+    def get_files(self) -> Files:
+        return Files.objects.filter(teachers__profile=self.profile)
 
     class Meta:
         verbose_name: str = "Викладач"
@@ -78,4 +99,3 @@ class Teacher(models.Model):
 
 
 pre_save.connect(change_profile_from_teacher, sender=Teacher)  # Adding to field access value 'teacher'
-

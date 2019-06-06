@@ -13,6 +13,12 @@ class Student(models.Model):
     def __str__(self) -> str:
         return "{} {} {}".format(self.profile.name, self.profile.surname, self.profile.last_name)
 
+    def get_groups(self)-> Group:
+        return Group.objects.filter(student__profile=self.profile)
+
+    def get_subjects(self) -> Subject:
+        return Subject.objects.filter(student__profile=self.profile)
+
     class Meta:
         verbose_name: str = "Студент"
         verbose_name_plural: str = "Студенти"

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 ACCESS_PROFILES = (
     ('teacher', 'Teacher'),
     ('student', 'Student'),
@@ -20,6 +19,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.surname} {self.name} {self.last_name}"
+
+
 
     class Meta:
         verbose_name = "Профіль"
