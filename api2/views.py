@@ -19,7 +19,7 @@ from office.models import Group, Subject, Teacher
 from office.serializers import SubjectTeacherSerializers, GroupSubjectSerializers
 from .serializers import GroupListSerializers, JournalSerializers
 from journal.serializers import ListRatingSerializers, DetailRatingSerializers, MarkSerializers
-
+from .models import Feedback
 from journal.permissions import TeacherPermission
 from utils import bad_request
 
@@ -74,3 +74,16 @@ class JournalAPIView(ListAPIView):
             profile.get_journals_by_subject_id(subject_id), many=True
         )
         return Response({'result': serializer.data}, status=st.HTTP_200_OK)
+
+
+class FeedbackAPIView(APIView):
+
+    def post(self, request):
+        profile = Profile.objects.get(user=request.user)
+        Feedback.objects.create(
+            author=profile,
+            thema=request.data['thema'],
+            message=request.data['message']
+        )
+        return Response({'result': 'fack'}, status=st.HTTP_200_OK)
+

@@ -46,6 +46,11 @@ class FilesTeacherSerializer(serializers.ModelSerializer):
         model = Files
         fields: tuple = ('id', 'file', 'title', 'subject')
 
+class FilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Files
+        fields: tuple = ('id', 'file', 'title')
+
 
 class TeacherSerializers(serializers.ModelSerializer):
     """Serializer teacher table"""
