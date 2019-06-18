@@ -67,6 +67,7 @@ class GroupTeachersAPIView(APIView):
 
 
 class GroupViewSet(ReadOnlyModelViewSet):
+    """ Get serializers data for group model"""
     queryset = Group.objects.all()
     serializer_class = GroupSubjectSerializers
 

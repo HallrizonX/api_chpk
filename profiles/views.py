@@ -14,6 +14,7 @@ from .serializers import ProfileSerializers
 
 
 class ProfileViewSet(ReadOnlyModelViewSet):
+    """ Take serializers data for profile model """
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializers
 
