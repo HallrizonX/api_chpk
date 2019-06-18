@@ -7,9 +7,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status as st
 
+from utils import bad_request
+
 from .models import News
 from .serializers import NewsListSerializers, NewsDetailSerializers
-from utils import bad_request
+
 
 
 class NewsListAPIView(APIView):

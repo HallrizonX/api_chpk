@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status as st
 
 from profiles.models import Profile
+from utils.CustomErrors import AccessError
 
 
 def file_cleanup(sender, **kwargs):
@@ -42,11 +43,18 @@ def bad_request(fnc):
     def inner(request, *args, **kwargs):
         try:
             return fnc(request, *args, **kwargs)
+
         except ObjectDoesNotExist:
             return Response({'message': 'Object does not exist'}, status=st.HTTP_400_BAD_REQUEST)
+
         except MultipleObjectsReturned:
             return Response({'message': 'Get more then one object'}, status=st.HTTP_400_BAD_REQUEST)
+
+        except AccessError as e:
+            return Response({'message': e.message}, status=e.status)
+
         except Exception as e:
             print(e)
             return Response({'message': 'Are you sure in your action? Something wrong!'}, status=st.HTTP_423_LOCKED)
+
     return inner

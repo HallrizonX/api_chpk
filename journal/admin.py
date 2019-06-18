@@ -63,17 +63,6 @@ class RatingAdmin(admin.ModelAdmin):
             kwargs['initial'] = request.user.id
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == "marks" and request.method == 'GET':
-            try:
-                rating_id = request.META['PATH_INFO'].split('/')[-3]
-                rating = Rating.objects.get(id=rating_id)
-                kwargs["queryset"] = Mark.objects.filter(rating__student__id=rating.student.id,
-                                                         rating__marks__author=request.user.id)
-            except Exception:
-                return super().formfield_for_manytomany(db_field, request, **kwargs)
-
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     class Media:
         js = ("admin.js",)
