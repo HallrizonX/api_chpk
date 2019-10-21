@@ -22,7 +22,7 @@ djangorestframework-jsonapi==2.4.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==1.2
 djoser==1.1.5
-ecdsa==0.13.2
+ecdsa==0.13.3
 future==0.17.1
 hyperlink==19.0.0
 idna==2.7
